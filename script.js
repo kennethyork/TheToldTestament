@@ -37,7 +37,14 @@ function allVideos() {
   return [...added, ...manual];
 }
 
-for (const video of allVideos()) {
+const videos = allVideos();
+if (!videos.length) {
+  list.innerHTML = `<p class="empty">The first episodes are on their way.
+    <a href="https://www.youtube.com/@thetoldtestament?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
+    to be notified when they're released.</p>`;
+}
+
+for (const video of videos) {
   const published = Boolean(video.youtubeId);
   const card = document.createElement("article");
   card.className = "video-card";

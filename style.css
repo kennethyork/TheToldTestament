@@ -107,6 +107,15 @@ a { color: var(--gold-dark); }
 
 /* Videos */
 .video-list { display: grid; gap: 2.5rem; }
+.empty {
+  margin: 0;
+  padding: 2.5rem 2rem;
+  background: #fffaf0;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 1.25rem;
+  color: var(--muted);
+}
 .video-card {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
