@@ -1,0 +1,37 @@
+name: Sync YouTube videos
+
+on:
+  schedule:
+    - cron: "17 * * * *" # every hour
+  workflow_dispatch: # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: node .github/scripts/sync-youtube.mjs
+
+      - name: Commit and publish if there are new videos
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- youtube.js; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add youtube.js
+          git commit -m "Sync videos from YouTube"
+          git push
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true

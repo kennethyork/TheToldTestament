@@ -1,7 +1,8 @@
-// Add one entry per video, newest first.
-// Once a video is published on YouTube, paste its ID into `youtubeId`.
-// The ID is the part after "watch?v=" — e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ → "dQw4w9WgXcQ".
-// Videos with an empty youtubeId show as "Coming soon".
+// Videos published on YouTube appear on the site automatically (see youtube.js).
+// Entries here are optional: use them to show a video as "Coming soon" before it's
+// public, or to use your own thumbnail and text. An entry is linked to its YouTube
+// video when the part of the title before ":" matches (e.g. "Genesis 1"), or you
+// can paste the ID into `youtubeId` (the part after "watch?v=" in the link).
 const VIDEOS = [
   {
     youtubeId: "",

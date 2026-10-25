@@ -16,7 +16,28 @@ function play(player, id, start) {
     allowfullscreen></iframe>`;
 }
 
-for (const video of VIDEOS) {
+// "Genesis 1: The Six Days of Creation" → "genesis1", so a renamed subtitle still matches.
+function titleKey(title) {
+  return title.split(":")[0].toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+// Combine the hand-written list with videos found on YouTube (youtube.js).
+// A YouTube video that matches an entry in videos.js fills in its ID; the rest
+// are added at the top using the title, description and chapters from YouTube.
+function allVideos() {
+  const manual = VIDEOS.map((video) => ({ ...video }));
+  const added = [];
+  for (const yt of typeof YOUTUBE_VIDEOS === "undefined" ? [] : YOUTUBE_VIDEOS) {
+    const match =
+      manual.find((video) => video.youtubeId === yt.youtubeId) ||
+      manual.find((video) => !video.youtubeId && titleKey(video.title) === titleKey(yt.title));
+    if (match) match.youtubeId = yt.youtubeId;
+    else added.push(yt);
+  }
+  return [...added, ...manual];
+}
+
+for (const video of allVideos()) {
   const published = Boolean(video.youtubeId);
   const card = document.createElement("article");
   card.className = "video-card";
